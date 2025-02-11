@@ -26,8 +26,7 @@ const LoginForm = () => {
 
       const { token, user } = response.data; // Assuming API returns { token, user }
 
-      console.log("Token received:", token);
-      console.log("User received:", user);
+      
 
       setToken(token);
       setUser(user); 

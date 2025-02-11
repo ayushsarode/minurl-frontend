@@ -6,9 +6,11 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./utils/protectedRoute";
-import Links from "./pages/Links";
+import URLList from "./pages/Links";
 import Sidebar from "./components/sidebar";
 import Nav from "./components/Dashboard/Nav";
+import CreateLink from "./pages/Dashboard/CreateLink";
+import RedirectPage from "./pages/Dashboard/RedirectPage";
 
 function App() {
   return (
@@ -23,6 +25,17 @@ function App() {
 
 
           <Route element={<ProtectedRoute />}>
+          <Route
+            path="/create-link"
+            element={
+              <div className="flex">
+                <Sidebar />
+                <div className="w-full">
+                  <CreateLink />
+                </div>
+              </div>
+            }
+          />
           <Route
             path="/dashboard"
             element={
@@ -40,13 +53,16 @@ function App() {
             element={
               <div className="flex">
                 <Sidebar />
-                <div className="ml-64 p-4 w-full">
-                  <Links />
+                <div className=" w-full">
+                  <URLList />
                 </div>
               </div>
             }
           />
         </Route>
+   
+        <Route path="/:short" element={<RedirectPage />} />
+  
         </Routes>
         
       </Router>
