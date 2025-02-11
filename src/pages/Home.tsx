@@ -1,4 +1,5 @@
 
+import Loading from "../components/Loading"
 import Navbar from "../components/Navbar"
 
 const Home = () => {
@@ -7,6 +8,7 @@ const Home = () => {
     
     <Navbar/>
     <div className='flex items-center justify-center mt-[rem] px-4 h-screen'>
+      <Loading/>
   {/* Left side */}
   <div className='max-w-3xl text-left'>
     <p className='text-lg bg-blue-100 inline-block p-1 rounded-full px-3 text-blue-600 my-2'>
