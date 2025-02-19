@@ -15,7 +15,7 @@ const Register: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-      setTimeout(() => setPageLoading(false), 1000);
+      setTimeout(() => setPageLoading(false), 500);
     })
 
     const handleRegister = async () => {

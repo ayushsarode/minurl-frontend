@@ -39,9 +39,9 @@ const Sidebar = () => {
     </div> */} 
     {/* Navigation Links */}
     <nav className="px-6 mt-[3em]">
-    <button className="w-full flex justify-center items-center py-3 mb-5 transition ease-linear duration-150 bg-blue-500 hover:bg-blue-600 rounded-md">
+    <button className="w-full flex justify-center items-center py-3 mb-5 transition ease-linear duration-150 bg-blue-600 hover:bg-blue-00 rounded-md">
   <div className="flex items-center gap-2">
-    <a href="/create-link" className="text-lg font-medium text-white">Create New Link</a>
+    <a href="/create-link" className="text-lg font-normal text-white">Create New Link</a>
   </div>
 </button>
 
@@ -56,8 +56,8 @@ const Sidebar = () => {
               : "bg-white text-black"
           }`}
         >
-          <div className="flex items-center gap-4 px-4 py-2 rounded-lg w-full">
-            <span>{item.icon}</span>
+          <div className="flex items-center gap-4 px-4 py-2 font-light rounded-lg w-full">
+            <span >{item.icon}</span>
             <span className="text-lmd ">{item.name}</span>
           </div>
         </button>

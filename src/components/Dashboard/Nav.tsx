@@ -15,7 +15,7 @@ const Nav = () => {
   }
 
   return (
-    <nav className="border-gray-200 dark:bg-gray-900 ml-[20rem] bg-white shadow-md h-23  max-w-screen ">
+    <nav className="border-gray-200 dark:bg-gray-900 ml-[20rem] bg-white shadow-md h-23 max-w-full ">
       <div className=" flex  items-center justify-between mx-auto p-7">
         {/* Logo */}
         <a href="#" className="flex items-center  rtl:space-x-reverse">

@@ -3,6 +3,7 @@ import axios from "axios";
 import { apiBaseUrl } from "../utils/api";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
+import {  toast } from "sonner";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -26,16 +27,33 @@ const LoginForm = () => {
 
       const { token, user } = response.data; // Assuming API returns { token, user }
 
-      
-
       setToken(token);
-      setUser(user); 
+      setUser(user);
 
-      alert("Login successful!");
+      // Success toast with dynamic position
+      toast.success("Login Successful", {
+        description: `Welcome back, ${user.name}!`,
+        style: { 
+          backgroundColor: "#4CAF50", // Rich green
+          color: "white" 
+        }, 
+        position: "bottom-right",
+      });
+      
 
       navigate("/dashboard");
     } catch (err) {
       setError("Invalid email or password");
+
+      // Error toast with dynamic position
+      toast.error("Login Failed", {
+        description: "Please check your email and password.",
+        style: { 
+          backgroundColor: "#F44336", // Rich red
+          color: "white"
+        },
+        position: "top-left",
+      });
     } finally {
       setLoading(false);
     }
@@ -43,8 +61,8 @@ const LoginForm = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form 
-        onSubmit={handleLogin} 
+      <form
+        onSubmit={handleLogin}
         className="bg-white p-6 rounded-lg shadow-md w-96"
       >
         <h2 className="text-2xl font-semibold text-center mb-4">Login</h2>
@@ -77,6 +95,7 @@ const LoginForm = () => {
           {loading ? "Logging in..." : "Login"}
         </button>
       </form>
+
     </div>
   );
 };

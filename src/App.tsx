@@ -39,9 +39,9 @@ function App() {
           <Route
             path="/dashboard"
             element={
-              <div className=" bg-slate-100">
+              <div className=" bg-slate-50">
                 <Sidebar />
-                
+                <Nav/>
                 <div className="w-full">
                   <Dashboard />
                 </div>
