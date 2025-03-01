@@ -4,6 +4,8 @@ import { useAuthStore } from "../store/authStore";
 import { useURLStore } from "../store/urlStore";
 import Nav from "../components/Dashboard/Nav";
 import { Copy, MoreVertical, Check, ExternalLink } from "lucide-react";
+import { toast } from "sonner";
+import { formatDistanceToNow } from "date-fns";
 
 const URLList: React.FC = () => {
   const token = useAuthStore((state) => state.token);
@@ -23,14 +25,24 @@ const URLList: React.FC = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const urlsPerPage = 5;
+  const [sortOrder, setSortOrder] = useState("newest");
 
   useEffect(() => {
     fetchUrls(token);
   }, [token, fetchUrls]);
 
+  const sortedUrls = [...urls].sort((a, b) => {
+    if (sortOrder === "newest")
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    if (sortOrder === "oldest")
+      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+    if (sortOrder === "mostClicks") return b.clicks - a.clicks;
+    return 0;
+  });
+
   const indexOfLastUrl = currentPage * urlsPerPage;
   const indexOfFirstUrl = indexOfLastUrl - urlsPerPage;
-  const currentUrls = urls.slice(indexOfFirstUrl, indexOfLastUrl);
+  const currentUrls = sortedUrls.slice(indexOfFirstUrl, indexOfLastUrl);
   const totalPages = Math.ceil(urls.length / urlsPerPage);
 
   const handleCopy = (shortUrl: string) => {
@@ -43,9 +55,19 @@ const URLList: React.FC = () => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this URL?"
     );
+
     if (!confirmed) return;
 
     await deleteUrl(shortCode, token);
+
+    toast.success("URL Deleted", {
+      description: `The shortened URL ${shortCode} has been removed.`,
+      style: {
+        backgroundColor: "#DC2626", // A rich red color
+        color: "white",
+      },
+      position: "bottom-right",
+    });
   };
 
   const handleDownloadQR = (shortCode: string) => {
@@ -79,7 +101,23 @@ const URLList: React.FC = () => {
           </div>
         ) : (
           <>
-            <h2 className="text-2xl font-bold mb-4">Your Shortened URLs</h2>
+            <div className="flex justify-between">
+              <h2 className="text-2xl font-medium mb-4">Your Shortened URLs</h2>
+              <div className="mb-4">
+                <label className="mr-2 font-medium">Sort By:</label>
+                <select
+                  value={sortOrder}
+                  onChange={(e) => setSortOrder(e.target.value)}
+                  className="px-4 py-2 shadow rounded-lg bg-white"
+                >
+                  <option value="newest" className="text-black py-2">
+                    Newest to Oldest
+                  </option>
+                  <option value="oldest">Oldest to Newest</option>
+                  <option value="mostClicks">Most Clicks</option>
+                </select>
+              </div>
+            </div>
             {urls.length === 0 ? (
               <div className="bg-white p-6 rounded-lg shadow">
                 <p className="text-gray-500">No URLs found</p>
@@ -87,7 +125,7 @@ const URLList: React.FC = () => {
             ) : (
               <div className="space-y-4">
                 {currentUrls.map((url) => (
-                  <div key={url.id} className="bg-white p-6 rounded-lg shadow">
+                  <div key={url.id} className="bg-white p-6 rounded-lg shadow ">
                     <div className="flex justify-between items-center">
                       <div className="space-y-2">
                         <p className="font-medium flex gap-2 items-center">
@@ -104,55 +142,57 @@ const URLList: React.FC = () => {
                         <p className="text-gray-600">
                           Original: {url.original}
                         </p>
-                        <p className="text-sm text-gray-500">
-                          Clicks: {url.clicks}
-                        </p>
-                        <p className="text-sm text-gray-500">
-          Created: {new Date(url.createdAt).toLocaleDateString()}
-        </p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => handleCopy(url.short)}
-                          className="px-2 py-2 cursor-pointer text-black hover:bg-gray-200 hover:rounded-full rounded-full transition duration-200 flex items-center gap-1"
-                        >
-                          {copied === url.short ? (
-                            <Check className="text-black" />
-                          ) : (
-                            <Copy />
-                          )}
-                        </button>
-                        <div className="relative">
-                          <button
-                            onClick={() => handleToggleDropdown(url.short)}
-                            className="px-2 py-2 text-black hover:bg-gray-200 hover:rounded-full rounded-full transition duration-200 flex items-center gap-1"
-                          >
-                            <MoreVertical />
-                          </button>
-                          {dropdown === url.short && (
-                            <div className="absolute right-0 mt-2 w-40 bg-white shadow-md rounded-lg overflow-hidden z-10">
-                              <button
-                                onClick={() => handleToggleQR(url.short)}
-                                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                              >
-                                {showQR === url.short ? "Hide QR" : "Show QR"}
-                              </button>
-                              <button
-                                onClick={() => handleDownloadQR(url.short)}
-                                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                              >
-                                Download QR
-                              </button>
-                              <button
-                                onClick={() => handleDelete(url.id)}
-                                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                              >
-                                Delete
-                              </button>
-                            </div>
-                          )}
+                        <div className="flex justify-between w-full">
+                          <p className="text-sm text-gray-500">
+                            Clicks: {url.clicks}
+                          </p>
                         </div>
                       </div>
+                      <div className="flex flex-col items-start gap-1">
+  <div className="flex items-start  justify-end w-full">
+    <button
+      onClick={() => handleCopy(url.short)}
+      className="px-2 py-2 cursor-pointer text-black hover:bg-gray-200 hover:rounded-full rounded-full transition duration-200 flex items-center gap-1"
+    >
+      {copied === url.short ? <Check className="text-black" /> : <Copy />}
+    </button>
+    <div className="relative">
+      <button
+        onClick={() => handleToggleDropdown(url.short)}
+        className="px-2 py-2 text-black hover:bg-gray-200 hover:rounded-full rounded-full transition duration-200 flex items-center gap-1"
+      >
+        <MoreVertical />
+      </button>
+      {dropdown === url.short && (
+        <div className="absolute right-0 mt-2 w-40 bg-white shadow-md rounded-lg overflow-hidden z-10 ">
+          <button
+            onClick={() => handleToggleQR(url.short)}
+            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          >
+            {showQR === url.short ? "Hide QR" : "Show QR"}
+          </button>
+          <button
+            onClick={() => handleDownloadQR(url.short)}
+            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          >
+            Download QR
+          </button>
+          <button
+            onClick={() => handleDelete(url.short)}
+            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          >
+            Delete
+          </button>
+        </div>
+      )}
+    </div>
+  </div>
+  <p className="text-sm text-gray-500">
+    Added{" "}
+    {formatDistanceToNow(new Date(url.createdAt), { addSuffix: true })}
+  </p>
+</div>
+
                     </div>
                     {showQR === url.short && (
                       <div className="mt-4 flex justify-center">

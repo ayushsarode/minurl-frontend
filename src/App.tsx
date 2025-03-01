@@ -11,6 +11,7 @@ import Sidebar from "./components/sidebar";
 import Nav from "./components/Dashboard/Nav";
 import CreateLink from "./pages/Dashboard/CreateLink";
 import RedirectPage from "./pages/Dashboard/RedirectPage";
+import Setting from "./pages/Dashboard/Setting";
 
 function App() {
   return (
@@ -55,6 +56,17 @@ function App() {
                 <Sidebar />
                 <div className=" w-full">
                   <URLList />
+                </div>
+              </div>
+            }
+          />
+           <Route
+            path="/settings"
+            element={
+              <div className="flex">
+                <Sidebar />
+                <div className=" w-full">
+                  <Setting />
                 </div>
               </div>
             }

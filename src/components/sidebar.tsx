@@ -14,7 +14,6 @@ const Sidebar = () => {
     { name: "Links", icon: <Link size={24} />, link: "/links" },
 
     { name: "Settings", icon: <Settings size={24} />, link: "/settings" },
-    { name: "Create New Link", icon: <Plus size={24} />, link: "/settings" },
   ];
 
   return (

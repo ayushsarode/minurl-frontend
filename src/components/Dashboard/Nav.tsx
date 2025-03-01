@@ -1,24 +1,24 @@
 import { useState } from "react";
-import {useAuthStore} from "../../store/authStore"
-import {useNavigate} from "react-router-dom"
+import { useAuthStore } from "../../store/authStore";
+import { useNavigate } from "react-router-dom";
 
 const Nav = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const logout = useAuthStore((state) => state.logout)
+  const logout = useAuthStore((state) => state.logout);
   const navigate = useNavigate();
-  const {user}  = useAuthStore()
+  const { user } = useAuthStore();
 
   const handleLogout = () => {
-    logout()
-    navigate("/")
-  }
+    logout();
+    navigate("/");
+  };
 
   return (
     <nav className="border-gray-200 dark:bg-gray-900 ml-[20rem] bg-white shadow-md h-23 max-w-full ">
-      <div className=" flex  items-center justify-between mx-auto p-7">
+      <div className="flex items-center justify-between mx-auto p-7">
         {/* Logo */}
-        <a href="#" className="flex items-center  rtl:space-x-reverse">
+        <a href="#" className="flex items-center rtl:space-x-reverse">
           <h1></h1>
           <span className="self-center text-lg lg:text-xl font-semibold whitespace-nowrap xl:text-2xl dark:text-white">
             Welcome! {user?.name}
@@ -36,7 +36,10 @@ const Nav = () => {
             <span className="sr-only">Open user menu</span>
             <img
               className="w-8 h-8 rounded-full"
-              src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
+              src={
+                user?.profile_pic ||
+                "https://flowbite.com/docs/images/people/profile-picture-3.jpg"
+              }
               alt="User"
             />
           </button>
@@ -53,23 +56,23 @@ const Nav = () => {
                 </span>
               </div>
               <ul className="py-2">
-      <li>
-        <a
-          href="/setting"
-          className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-        >
-          Settings
-        </a>
-      </li>
-      <li>
-        <button
-          onClick={handleLogout}
-          className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-        >
-          Sign out
-        </button>
-      </li>
-    </ul>
+                <li>
+                  <a
+                    href="/setting"
+                    className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                  >
+                    Settings
+                  </a>
+                </li>
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                  >
+                    Sign out
+                  </button>
+                </li>
+              </ul>
             </div>
           )}
 
