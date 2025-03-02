@@ -12,6 +12,9 @@ import Nav from "./components/Dashboard/Nav";
 import CreateLink from "./pages/Dashboard/CreateLink";
 import RedirectPage from "./pages/Dashboard/RedirectPage";
 import Setting from "./pages/Dashboard/Setting";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import Pricing from "./pages/Pricing";
 
 function App() {
   return (
@@ -20,6 +23,9 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/pricing" element={<Pricing />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           
