@@ -1,4 +1,3 @@
-import React from "react";
 import Nav from "../../components/Dashboard/Nav";
 import ProfileComponent from "../../components/UploadProfile";
 

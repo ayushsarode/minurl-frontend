@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import axios from 'axios';
 import { apiBaseUrl } from '../utils/api';
-import {toast} from 'sonner'
 
 interface URL {
     id: string;

@@ -1,7 +1,7 @@
-import { useState } from "react";
+
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-import { Home, Link, Settings, Plus } from "lucide-react";
-import {useAuthStore} from "../store/authStore"
+import { Home, Link, Settings } from "lucide-react";
+
 import Logo from "../assets/logo.gif"
 
 
