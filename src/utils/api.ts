@@ -1,1 +1,1 @@
-export const apiBaseUrl = "http://localhost:8080"
+export const apiBaseUrl = "https://minurl-backend-583889927019.us-central1.run.app"
